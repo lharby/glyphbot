@@ -1,20 +1,22 @@
 {
-  "name": "glyphbot",
-  "version": "1.0.0",
-  "description": "Twitter bot to generate randomised glyphs",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "test"
-  },
-  "keywords": [
-    "Twitter",
-    "API",
-    "bot"
-  ],
-  "author": "Luke Harby",
-  "license": "ISC",
-  "dependencies": {
-    "twit": "^2.2.11"
-  }
+    "name": "glyphbot",
+    "version": "1.0.0",
+    "description": "Twitter bot to generate randomised glyphs",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/index.js",
+        "test": "test"
+    },
+    "keywords": [
+        "Twitter",
+        "API",
+        "bot"
+    ],
+    "author": "Luke Harby",
+    "license": "ISC",
+    "dependencies": {
+        "dalle-node": "^1.0.7",
+        "twit": "^2.2.11"
+    }
 }
