@@ -18,10 +18,7 @@ const generations = await dalle.generate('The letter E in gothic script font');
 
 const imagesArray = generations.data.map(item => item.generation.image_path);
 
-console.log(`${imagesArray}`);
-
 imagesArray.forEach(item => {
     const fileName = uuid.v4() + '.webp';
-    // const fileName = new Date().getTime().toString() + '.webp';
     return downloadImage(item, `${imageFolder}/${fileName}`);
 });

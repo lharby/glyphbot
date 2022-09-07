@@ -1,14 +1,14 @@
 import Twit from 'twit';
 import { configTwitter } from '../config/config.js';
-import { rndAdjective, rndNoun } from './components/data.js';
-
-console.log(rndAdjective, rndNoun);
+import { rndAlphabet, rndFontFamily } from './components/arrays.js';
 
 const T = new Twit(configTwitter);
 
 const params = {
-    status: `This is a ${rndAdjective} ${rndNoun} generated sentence.`,
+    status: `The letter ${rndAlphabet} in a ${rndFontFamily} font.`,
 };
+
+console.log(params);
 
 const getData = (err, data, response) => {
     if (err) {
