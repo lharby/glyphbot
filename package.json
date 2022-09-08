@@ -5,7 +5,7 @@
     "main": "index.js",
     "type": "module",
     "engines": {
-        "node": ">=14.0.0",
+        "node": ">=14.0.0"
     },
     "scripts": {
         "start": "node src/index.js",
@@ -19,6 +19,9 @@
     ],
     "author": "Luke Harby",
     "license": "ISC",
+    "devDependencies": {
+        "dotenv": "^16.0.1"
+    },
     "dependencies": {
         "dalle-node": "^1.0.7",
         "twit": "^2.2.11"
