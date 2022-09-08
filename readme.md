@@ -1,6 +1,10 @@
-# A twitter bot designed to connect to text to image AI.
+# A twitter bot designed to connect to a 'text to image' AI.
 
-Connect to the DALL-E API and fetch images using psuedo randomised parameters. Once retrieved push a single image to Twitter.
+# prerequisites
+- NVM
+- Node (use v14.0.0 >)
+
+Connect to the DALL-E API and fetch images using pseudo-randomised parameters. Once retrieved push a single image to Twitter.
 
 Check https://github.com/ezzcodeezzlife/dalle-node for reference.
 

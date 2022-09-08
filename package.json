@@ -4,8 +4,12 @@
     "description": "Twitter bot to generate randomised glyphs",
     "main": "index.js",
     "type": "module",
+    "engines": {
+        "node": ">=14.0.0",
+    },
     "scripts": {
         "start": "node src/index.js",
+        "dalle": "node src/dalle.js",
         "test": "test"
     },
     "keywords": [
