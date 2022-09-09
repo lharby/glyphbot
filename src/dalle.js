@@ -7,12 +7,18 @@ import dotenv from 'dotenv';
 import { Dalle } from 'dalle-node';
 import { rndAlphabet, rndFontFamily } from './components/arrays.js';
 
+const arrKeys = [
+    process.env.NEXT_DALLE_API_KEY_1,
+    process.env.NEXT_DALLE_API_KEY_2,
+];
+
+const rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
+
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
 const str = `The letter ${rndAlphabet} in a ${rndFontFamily} font.`;
-console.log(str);
 
 function downloadImage(url, filepath) {
     client.get(url, res => {
@@ -20,7 +26,7 @@ function downloadImage(url, filepath) {
     });
 }
 
-const dalle = new Dalle(process.env.NEXT_DALLE_API_KEY);
+const dalle = new Dalle(rndKey);
 
 const generations = await dalle.generate(str);
 
@@ -30,3 +36,5 @@ imagesArray.forEach(item => {
     const fileName = uuid.v4() + '.webp';
     return downloadImage(item, path.join('src', 'img', fileName));
 });
+
+console.log(`str: ${str}. rndKey: ${rndKey}`);

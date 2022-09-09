@@ -1,4 +1,7 @@
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+
 import Twit from 'twit';
 import { rndAlphabet, rndFontFamily } from './components/arrays.js';
 
@@ -19,16 +22,49 @@ const params = {
     status: `The letter ${rndAlphabet} in a ${rndFontFamily} font.`,
 };
 
-console.log(params);
+const readImageFile = () => {
+    fs.readdir(path.join('src', 'img'), (err, files) => {
+        if (err || files.length !== 1) {
+            console.log(`There was an error reading the file: ${err}`);
+        } else {
+            processFiles(files[0]);
+        }
+    });
 
-const getData = (err, data, response) => {
+    const processFiles = fileName => {
+        // Read the file
+        const imageContent = fs.readFileSync(
+            path.join('src', 'img', `${fileName}`),
+            { encoding: 'base64' }
+        );
+
+        // Upload the media
+        T.post('media/upload', { media_data: imageContent }, mediaUploaded);
+    };
+};
+
+const mediaUploaded = (err, data, response) => {
     if (err) {
-        console.log(`There was an error ${err}`);
+        console.log(`There was a mediaUploaded error: ${err}`);
     } else {
-        console.log(data);
+        // Now we can reference the media and post a tweet
+        // with the media attached
+        const mediaIdStr = data.media_id_string;
+        const params = {
+            media_ids: [mediaIdStr],
+        };
+
+        // Post tweet
+        T.post('statuses/update', params, postData);
     }
 };
 
-T.get('search/tweets', { q: 'banana since:2011-07-11', count: 3 }, getData);
+const postData = (err, data, response) => {
+    if (err) {
+        console.log(`There was an postData error: ${err}`);
+    } else {
+        console.log(`success!: ${JSON.stringify(data)}`);
+    }
+};
 
-// T.post('statuses/update', params, getData);
+readImageFile();
