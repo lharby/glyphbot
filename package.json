@@ -1,7 +1,7 @@
 {
     "name": "glyphbot",
-    "version": "1.0.0",
-    "description": "Twitter bot to generate randomised glyphs",
+    "version": "1.0.1",
+    "description": "Mastondon bot to generate randomised glyphs",
     "main": "index.js",
     "type": "module",
     "engines": {
@@ -9,11 +9,11 @@
     },
     "scripts": {
         "start": "node src/index.js",
-        "dalle": "node src/dalle.js",
-        "test": "test"
+        "temp": "node src/temp.js",
+        "test": "node src/test.js"
     },
     "keywords": [
-        "Twitter",
+        "Mastodon",
         "API",
         "bot"
     ],
@@ -23,7 +23,7 @@
         "dotenv": "^16.0.1"
     },
     "dependencies": {
-        "dalle-node": "^1.0.7",
-        "twit": "^2.2.11"
+        "mastodon-api": "^1.3.0",
+        "openai": "^3.1.0"
     }
 }

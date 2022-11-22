@@ -1,82 +1,226 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { Stream } from 'stream';
+import uuid from 'uuid';
+import dotenv from 'dotenv';
 
-import Twit from 'twit';
-import { rndAlphabet, rndFontFamily } from './components/arrays.js';
+import { Configuration, OpenAIApi } from 'openai';
+import Mastodon from 'mastodon-api';
+
+import { downloadFile } from './utils/downloadFiles.js';
+import { rndAlphabet, rndFontFamily } from './utils/arrays.js';
+
+const now = new Date();
+const today = now.toLocaleString('en-gb');
+const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
+const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
 
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config();
 }
 
-let today = new Date();
-today = today.toLocaleString('en-gb');
-const errorFile = path.join('src', 'log', 'errors.txt');
-const stream = fs.createWriteStream(errorFile, { flags: 'a' });
-
-const configTwitter = {
-    consumer_key: process.env.NEXT_TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.NEXT_TWITTER_CONSUMER_SECRET,
-    access_token: process.env.NEXT_TWITTER_ACCESS_TOKEN,
-    access_token_secret: process.env.NEXT_TWITTER_ACCESS_TOKEN_SECRET,
+const config = {
+    access_token: process.env.NEXT_MASTODON_ACCESS_TOKEN,
+    timeout_ms: 60 * 1000,
+    api_url: 'https://botsin.space/api/v1/',
 };
 
-const T = new Twit(configTwitter);
+const M = new Mastodon(config);
 
-const params = {
-    status: `The letter ${rndAlphabet} in a ${rndFontFamily} font.`,
-};
+let imagesArray = [];
+let newImageNames = [];
 
-const readImageFile = () => {
-    fs.readdir(path.join('src', 'img'), (err, files) => {
-        if (err || files.length !== 1) {
-            console.log(`There was an error reading the file: ${err}`);
-            stream.write(`${today}. Error reading from file: ${err} \n`);
-            stream.end();
+const arrKeys = [
+    process.env.NEXT_DALLE_API_KEY_1,
+    process.env.NEXT_DALLE_API_KEY_4,
+];
+
+// get random api key
+const rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
+
+// set a key for the openai config
+const configuration = new Configuration({
+    apiKey: rndKey,
+});
+const openai = new OpenAIApi(configuration);
+
+// prompt and call the api with our string
+const prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font.`;
+console.log('rndKey: ', rndKey);
+
+// function to retrieve data with prompt
+const fetchData = async () => {
+    try {
+        const response = await openai.createImage({
+            prompt,
+            n: 4,
+            size: '512x512',
+        });
+        imagesArray = response.data.data.map(item => item.url);
+        processData();
+    } catch (error) {
+        if (error.response) {
+            errorStream.write(
+                `${today}. Error reading from fetchData and error response: ${JSON.stringify(
+                    error.response.data
+                )} \n`
+            );
+            errorStream.end();
         } else {
-            processFiles(files[0]);
+            errorStream.write(
+                `${today}. Error reading from fetchData and error message: ${JSON.stringify(
+                    error.message
+                )} \n`
+            );
+            errorStream.end();
         }
-    });
+        // postDataFallback();
+    }
+};
 
-    const processFiles = fileName => {
-        // Read the file
-        const imageContent = fs.readFileSync(
-            path.join('src', 'img', `${fileName}`),
-            { encoding: 'base64' }
-        );
-
-        // Upload the media
-        T.post('media/upload', { media_data: imageContent }, mediaUploaded);
+// for each image downloaded add a filename
+// using the prompt and a random uuid
+const processData = () => {
+    const processDataCallback = () => {
+        postData();
     };
+    try {
+        imagesArray.forEach((item, index) => {
+            const fileName = `${prompt}__${index}_${uuid.v4()}.png`;
+            const filePath = path.join(
+                process.cwd(),
+                'src',
+                'img-archive',
+                fileName
+            );
+            newImageNames.push(fileName);
+            return downloadFile(item, filePath, processDataCallback);
+        });
+    } catch (error) {
+        errorStream.write(
+            `${today}. Error reading from processData: ${error} \n`
+        );
+        errorStream.end();
+        // postDataFallback();
+    }
 };
 
-const mediaUploaded = (err, data, response) => {
-    if (err) {
-        console.log(`There was a mediaUploaded error: ${err}`);
-        stream.write(`${today}. Error from mediaUploaded: ${err} \n`);
-        stream.end();
-    } else {
-        // Now we can reference the media and post a tweet
-        // with the media attached
-        const mediaIdStr = data.media_id_string;
-        const params = {
-            media_ids: [mediaIdStr],
+// postData function
+const postData = () => {
+    try {
+        const rndImage =
+            newImageNames[Math.floor(Math.random() * newImageNames.length)];
+        const filePath = path.join(
+            process.cwd(),
+            'src',
+            'img-archive',
+            rndImage
+        );
+        const fileStream = fs.createReadStream(filePath);
+        const responseParams = {
+            file: fileStream,
+            description: prompt,
         };
-
-        // Post tweet
-        T.post('statuses/update', params, postData);
+        M.post('media', responseParams).then(response => {
+            const mediaId = response.data.id;
+            const mediaParams = {
+                status: '',
+                media_ids: [mediaId],
+            };
+            M.post('statuses', mediaParams).then(response => {
+                if (response.data.id) {
+                    removeFile();
+                    console.log(`Removing file ${rndImage}`);
+                }
+            });
+        });
+        const removeFile = () => {
+            fs.rmSync(
+                path.join(process.cwd(), 'src', 'img-archive', `${rndImage}`),
+                {
+                    force: true,
+                }
+            );
+        };
+    } catch (error) {
+        errorStream.write(`${today}. Error reading from postData: ${error} \n`);
+        errorStream.end();
+        // postDataFallback();
     }
 };
 
-const postData = (err, data, response) => {
-    if (err) {
-        console.log(`There was an postData error: ${err}`);
-        stream.write(`${today}. Error from postData: ${err} \n`);
-        Stream.end();
-    } else {
-        console.log(`success!: ${JSON.stringify(data.created_at)}`);
+// fallback if any of the methods fail
+const postDataFallback = () => {
+    let fileName;
+    let fileStream;
+    try {
+        fs.readdir(
+            path.join(process.cwd(), 'src', 'img-archive'),
+            (err, files) => {
+                if (err) {
+                    console.log('err:', err);
+                    errorStream.write(
+                        `${today}. Error reading from postDataFallback read files: ${err} \n`
+                    );
+                    errorStream.end();
+                }
+                const max = files.length - 1;
+                const min = 0;
+                const index = Math.round(Math.random() * (max - min) + min);
+                fileName = files[index];
+                fileStream = fs.createReadStream(
+                    path.join(
+                        process.cwd(),
+                        'src',
+                        'img-archive',
+                        `${fileName}`
+                    )
+                );
+                const promptFallback = fileName.split('__')[0];
+                const responseParams = {
+                    file: fileStream,
+                    description: promptFallback,
+                };
+                M.post('media', responseParams).then(response => {
+                    const mediaId = response.data.id;
+                    const mediaParams = {
+                        status: '',
+                        media_ids: [mediaId],
+                    };
+                    M.post('statuses', mediaParams).then(response => {
+                        console.log(
+                            'final response data id: ',
+                            response.data.id
+                        );
+                        if (response.data.id) {
+                            removeFile();
+                        }
+                    });
+                });
+
+                const removeFile = () => {
+                    fs.rmSync(
+                        path.join(
+                            process.cwd(),
+                            'src',
+                            'img-archive',
+                            `${fileName}`
+                        ),
+                        {
+                            force: true,
+                        }
+                    );
+                };
+            }
+        );
+    } catch (error) {
+        errorStream.write(
+            `${today}. Error reading from postDataFallback: ${error} \n`
+        );
+        errorStream.end();
     }
 };
 
-readImageFile();
+// TODO schedule this
+fetchData();
+
+// postDataFallback();

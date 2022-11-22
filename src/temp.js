@@ -1,17 +1,25 @@
 import fs from 'fs';
-import client from 'https';
 import path from 'path';
 
-function downloadImage(url, fileName, callback) {
-    client.get(url, res => {
-        res.pipe(fs.createWriteStream(fileName)).on('close', callback);
-    });
-}
+const processDataFallback = () => {
+    try {
+        fs.readdir(
+            path.join(process.cwd(), 'src', 'img-archive'),
+            (err, files) => {
+                console.log(err, files);
 
-const callback = () => console.log('done');
+                let max = files.length - 1;
+                let min = 0;
 
-downloadImage(
-    'https://www.google.com/images/srpr/logo3w.png',
-    path.join('src', 'img', 'google.png'),
-    callback
-);
+                let index = Math.round(Math.random() * (max - min) + min);
+                let file = files[index];
+
+                console.log('Random file is', file);
+            }
+        );
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+processDataFallback();
