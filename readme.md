@@ -16,5 +16,6 @@ There is a fallback should any of the processes fail
 API tokens, secrets, authentication etc are stored in .env file, and should not be pushed to the repo.
 
 Refenreces:
-https://openai.com/api/
-https://github.com/ezzcodeezzlife/dalle-node
+
+-   https://openai.com/api/
+-   https://github.com/ezzcodeezzlife/dalle-node
