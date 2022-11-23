@@ -8,9 +8,7 @@
         "node": ">=14.0.0"
     },
     "scripts": {
-        "start": "node src/index.js",
-        "temp": "node src/temp.js",
-        "test": "node src/test.js"
+        "start": "node src/index.js"
     },
     "keywords": [
         "Mastodon",
