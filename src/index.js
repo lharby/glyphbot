@@ -195,7 +195,7 @@ const postDataFallback = () => {
                         );
                         if (response.data.id) {
                             removeFile();
-                            console.log(`Removing file ${rndImage}`);
+                            console.log(`Removing file ${fileName}`);
                         }
                     });
                 });
