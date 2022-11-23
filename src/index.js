@@ -11,6 +11,7 @@ import { rndAlphabet, rndFontFamily } from './utils/arrays.js';
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
+const interval = 1000 * 60 * 60 * 24; // 24 hours
 const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
 const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
 
@@ -222,7 +223,16 @@ const postDataFallback = () => {
     }
 };
 
-// TODO schedule this
+// Run fetchData once then schedule it.
 fetchData();
 
-// postDataFallback();
+// Create a random time of day to post to the API
+const rndIntervalFunction = () => {
+    const nextRunIn = Math.floor(Math.random() * interval);
+    setTimeout(fetchData, nextRunIn);
+};
+
+// Run this function every 24 hours
+setInterval(rndIntervalFunction, interval);
+
+rndIntervalFunction();
