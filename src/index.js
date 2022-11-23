@@ -31,6 +31,8 @@ let newImageNames = [];
 
 const arrKeys = [
     process.env.NEXT_DALLE_API_KEY_1,
+    process.env.NEXT_DALLE_API_KEY_2,
+    process.env.NEXT_DALLE_API_KEY_3,
     process.env.NEXT_DALLE_API_KEY_4,
 ];
 
@@ -45,7 +47,6 @@ const openai = new OpenAIApi(configuration);
 
 // prompt and call the api with our string
 const prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font.`;
-console.log('rndKey: ', rndKey);
 
 // function to retrieve data with prompt
 const fetchData = async () => {
@@ -73,7 +74,7 @@ const fetchData = async () => {
             );
             errorStream.end();
         }
-        // postDataFallback();
+        postDataFallback();
     }
 };
 
@@ -100,7 +101,7 @@ const processData = () => {
             `${today}. Error reading from processData: ${error} \n`
         );
         errorStream.end();
-        // postDataFallback();
+        postDataFallback();
     }
 };
 
@@ -144,7 +145,7 @@ const postData = () => {
     } catch (error) {
         errorStream.write(`${today}. Error reading from postData: ${error} \n`);
         errorStream.end();
-        // postDataFallback();
+        postDataFallback();
     }
 };
 
@@ -193,6 +194,7 @@ const postDataFallback = () => {
                         );
                         if (response.data.id) {
                             removeFile();
+                            console.log(`Removing file ${rndImage}`);
                         }
                     });
                 });
