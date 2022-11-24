@@ -109,13 +109,13 @@ const processData = () => {
 // postData function
 const postData = () => {
     try {
-        const rndImage =
+        const fileName =
             newImageNames[Math.floor(Math.random() * newImageNames.length)];
         const filePath = path.join(
             process.cwd(),
             'src',
             'img-archive',
-            rndImage
+            fileName
         );
         const fileStream = fs.createReadStream(filePath);
         const responseParams = {
@@ -131,13 +131,13 @@ const postData = () => {
             M.post('statuses', mediaParams).then(response => {
                 if (response.data.id) {
                     removeFile();
-                    console.log(`Removing file ${rndImage}`);
+                    console.log(`Removing file ${fileName}`);
                 }
             });
         });
         const removeFile = () => {
             fs.rmSync(
-                path.join(process.cwd(), 'src', 'img-archive', `${rndImage}`),
+                path.join(process.cwd(), 'src', 'img-archive', `${fileName}`),
                 {
                     force: true,
                 }
