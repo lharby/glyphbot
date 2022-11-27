@@ -4,3 +4,4 @@
 22/11/2022, 15:55:12. Error reading from fetchData and error response: {"error":{"code":"billing_hard_limit_reached","message":"Billing hard limit has been reached","param":null,"type":"invalid_request_error"}} 
 22/11/2022, 15:55:16. Error reading from fetchData and error response: {"error":{"code":"billing_hard_limit_reached","message":"Billing hard limit has been reached","param":null,"type":"invalid_request_error"}} 
 23/11/2022, 09:55:49. Error reading from fetchData and error response: {"error":{"code":"billing_hard_limit_reached","message":"Billing hard limit has been reached","param":null,"type":"invalid_request_error"}} 
+27/11/2022, 11:21:02. Error reading from fetchData and error response: {"error":{"code":"billing_hard_limit_reached","message":"Billing hard limit has been reached","param":null,"type":"invalid_request_error"}} 

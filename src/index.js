@@ -219,13 +219,15 @@ const postDataFallback = () => {
 // Run fetchData once then schedule it.
 fetchData();
 
-// Create a random time of day to post to the API
-const rndIntervalFunction = () => {
-    const nextRunIn = Math.floor(Math.random() * interval);
-    setTimeout(fetchData, nextRunIn);
-};
+if (process.env.NODE_ENV !== 'production') {
+    // Create a random time of day to post to the API
+    const rndIntervalFunction = () => {
+        const nextRunIn = Math.floor(Math.random() * interval);
+        setTimeout(fetchData, nextRunIn);
+    };
 
-// Run this function every 24 hours
-setInterval(rndIntervalFunction, interval);
+    // Run this function every 24 hours
+    setInterval(rndIntervalFunction, interval);
 
-rndIntervalFunction();
+    rndIntervalFunction();
+}
