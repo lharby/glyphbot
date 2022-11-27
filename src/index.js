@@ -7,7 +7,7 @@ import { Configuration, OpenAIApi } from 'openai';
 import Mastodon from 'mastodon-api';
 
 import { downloadFile } from './utils/downloadFiles.js';
-import { rndAlphabet, rndFontFamily } from './utils/arrays.js';
+import { rndAlphabet, rndFontFamily, rndColour } from './utils/arrays.js';
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
@@ -47,7 +47,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // prompt and call the api with our string
-const prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font.`;
+const prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font on a ${rndColour} coloured background.`;
 
 // function to retrieve data with prompt
 const fetchData = async () => {
@@ -137,7 +137,7 @@ const postData = () => {
         });
         const removeFile = () => {
             fs.rmSync(
-                path.join(process.cwd(), 'src', 'img-archive', `${fileName}`),
+                path.join(process.cwd(), 'src', 'img-archive', fileName),
                 {
                     force: true,
                 }
@@ -152,8 +152,6 @@ const postData = () => {
 
 // fallback if any of the methods fail
 const postDataFallback = () => {
-    let fileName;
-    let fileStream;
     try {
         fs.readdir(
             path.join(process.cwd(), 'src', 'img-archive'),
@@ -168,14 +166,9 @@ const postDataFallback = () => {
                 const max = files.length - 1;
                 const min = 0;
                 const index = Math.round(Math.random() * (max - min) + min);
-                fileName = files[index];
-                fileStream = fs.createReadStream(
-                    path.join(
-                        process.cwd(),
-                        'src',
-                        'img-archive',
-                        `${fileName}`
-                    )
+                const fileName = files[index];
+                const fileStream = fs.createReadStream(
+                    path.join(process.cwd(), 'src', 'img-archive', fileName)
                 );
                 const promptFallback = fileName.split('__')[0];
                 const responseParams = {
@@ -206,7 +199,7 @@ const postDataFallback = () => {
                             process.cwd(),
                             'src',
                             'img-archive',
-                            `${fileName}`
+                            fileName
                         ),
                         {
                             force: true,

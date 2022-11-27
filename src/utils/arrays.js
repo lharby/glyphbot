@@ -7,6 +7,7 @@ const arrFontFamilies = [
     'serif',
     'sans serif',
     'cursive',
+    'monospace',
 ];
 
 const arrLanguages = [
@@ -20,6 +21,36 @@ const arrLanguages = [
     'Latin',
 ];
 
+const arrColours = [
+    'red',
+    'orange',
+    'yellow',
+    'green',
+    'cyan',
+    'blue',
+    'magenta',
+    'fuchsia',
+    'purple',
+    'white',
+    'black',
+    'grey',
+    'silver',
+    'gold',
+    'pink',
+    'maroon',
+    'brown',
+    'beige',
+    'tan',
+    'lime',
+    'olive',
+    'turquoise',
+    'teal',
+    'pale blue',
+    'navy blue',
+    'indigo',
+    'violet',
+];
+
 export const rndAlphabet =
     arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
 
@@ -30,3 +61,6 @@ export const rndFontFamily =
 
 export const rndLanguage =
     arrLanguages[Math.floor(Math.random() * arrLanguages.length)].toString();
+
+export const rndColour =
+    arrColours[Math.floor(Math.random() * arrColours.length)].toString();

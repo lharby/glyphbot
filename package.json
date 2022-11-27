@@ -1,8 +1,8 @@
 {
     "name": "glyphbot",
     "version": "1.0.1",
-    "description": "Mastondon bot to generate randomised glyphs",
-    "main": "src/index.js",
+    "description": "Mastondon bot that generates pseudo-randomised glyphs and letter forms",
+    "main": "./src/index.js",
     "type": "module",
     "engines": {
         "node": ">=14.0.0"
