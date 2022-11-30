@@ -192,7 +192,6 @@ const postDataFallback = () => {
                         }
                     });
                 });
-
                 const removeFile = () => {
                     fs.rmSync(
                         path.join(
@@ -219,7 +218,7 @@ const postDataFallback = () => {
 // Run fetchData once then schedule it.
 fetchData();
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     // Create a random time of day to post to the API
     const rndIntervalFunction = () => {
         const nextRunIn = Math.floor(Math.random() * interval);
