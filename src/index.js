@@ -14,9 +14,11 @@ const today = now.toLocaleString('en-gb');
 const interval = 1000 * 60 * 60 * 24; // 24 hours
 const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
 const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
+const successFile = path.join(process.cwd(), 'src', 'log', 'success.txt');
+const successStream = fs.createWriteStream(successFile, { flags: 'a' });
 
 if (process.env.NODE_ENV !== 'production') {
-    dotenv.config();
+    dotenv.config(); // TODO we need to expose this all the time, so remove the if statement. Env should always be production
 }
 
 const config = {
@@ -58,21 +60,16 @@ const fetchData = async () => {
             size: '512x512',
         });
         imagesArray = response.data.data.map(item => item.url);
-        processData();
+        console.log(`${today}. Success from fetchData function. Reading api key ${rndKey} with prompt ${prompt}`);
+        if (response.data.created) {
+            processData();
+        }
     } catch (error) {
         if (error.response) {
-            errorStream.write(
-                `${today}. Error reading from fetchData and error response: ${JSON.stringify(
-                    error.response.data
-                )} \n`
-            );
+            errorStream.write(`${today}. Error reading from fetchData with apiKey ${rndKey}, and error response: ${JSON.stringify(error.response.data)} \n`);
             errorStream.end();
         } else {
-            errorStream.write(
-                `${today}. Error reading from fetchData and error message: ${JSON.stringify(
-                    error.message
-                )} \n`
-            );
+            errorStream.write(`${today}. Error reading from fetchData with apiKey ${rndKey}, and error message: ${JSON.stringify(error.message)} \n`);
             errorStream.end();
         }
         postDataFallback();
@@ -83,8 +80,13 @@ const fetchData = async () => {
 // using the prompt and a random uuid
 const processData = () => {
     const processDataCallback = () => {
+        console.log('calling processDataCallback');
         postData();
     };
+    const fileDownloadCallback = () => {
+        console.log(`File download callback`);
+    }
+    let itemsProcessed = 0;
     try {
         imagesArray.forEach((item, index) => {
             const fileName = `${prompt}__${index}_${uuid.v4()}.png`;
@@ -95,14 +97,19 @@ const processData = () => {
                 fileName
             );
             newImageNames.push(fileName);
-            return downloadFile(item, filePath, processDataCallback);
+            downloadFile(item, filePath, fileDownloadCallback);
+            itemsProcessed++;
+            if (itemsProcessed === imagesArray.length) {
+                processDataCallback();
+                console.log(`${today}. Success from processData function.`);
+            }
         });
     } catch (error) {
+        postDataFallback();
         errorStream.write(
             `${today}. Error reading from processData: ${error} \n`
         );
         errorStream.end();
-        postDataFallback();
     }
 };
 
@@ -131,7 +138,7 @@ const postData = () => {
             M.post('statuses', mediaParams).then(response => {
                 if (response.data.id) {
                     removeFile();
-                    console.log(`Removing file ${fileName}`);
+                    console.log(`${today}. Success from postData function posting image to server. Removing file ${fileName}`);
                 }
             });
         });
@@ -144,9 +151,9 @@ const postData = () => {
             );
         };
     } catch (error) {
+        postDataFallback();
         errorStream.write(`${today}. Error reading from postData: ${error} \n`);
         errorStream.end();
-        postDataFallback();
     }
 };
 
@@ -157,7 +164,6 @@ const postDataFallback = () => {
             path.join(process.cwd(), 'src', 'img-archive'),
             (err, files) => {
                 if (err) {
-                    console.log('err:', err);
                     errorStream.write(
                         `${today}. Error reading from postDataFallback read files: ${err} \n`
                     );
@@ -182,13 +188,10 @@ const postDataFallback = () => {
                         media_ids: [mediaId],
                     };
                     M.post('statuses', mediaParams).then(response => {
-                        console.log(
-                            'final response data id: ',
-                            response.data.id
-                        );
+                        console.log(`final response data id: ${response.data.id}`);
                         if (response.data.id) {
                             removeFile();
-                            console.log(`Removing file ${fileName}`);
+                            console.log(`${today}. Success from postDataFallback function posting image to server. Removing file ${fileName}`);
                         }
                     });
                 });
@@ -218,7 +221,7 @@ const postDataFallback = () => {
 // Run fetchData once then schedule it.
 fetchData();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') { // This should always be true
     // Create a random time of day to post to the API
     const rndIntervalFunction = () => {
         const nextRunIn = Math.floor(Math.random() * interval);

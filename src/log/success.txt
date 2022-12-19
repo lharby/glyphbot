@@ -1,0 +1,5 @@
+06/12/2022, 15:06:21. Success from processData function. 
+06/12/2022, 18:39:43. Success from postDataFallback function posting image to server. Removing file the character _ in an outline font__DALL·E 2022-11-22 11.25.39.png 
+06/12/2022, 18:50:32. Success from fetchData function. Reading api key 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 with prompt The letter W in a cursive font on a yellow coloured background. 
+06/12/2022, 18:57:35. Success from processData function. 
+06/12/2022, 19:02:38. Success from processData function. 

@@ -22,33 +22,14 @@ const arrLanguages = [
 ];
 
 const arrColours = [
-    'red',
-    'orange',
     'yellow',
-    'green',
-    'cyan',
-    'blue',
-    'magenta',
-    'fuchsia',
-    'purple',
     'white',
     'black',
     'grey',
     'silver',
     'gold',
-    'pink',
-    'maroon',
-    'brown',
     'beige',
-    'tan',
-    'lime',
-    'olive',
-    'turquoise',
-    'teal',
-    'pale blue',
-    'navy blue',
-    'indigo',
-    'violet',
+    'tan'
 ];
 
 export const rndAlphabet =
