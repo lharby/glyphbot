@@ -7,19 +7,15 @@ import { Configuration, OpenAIApi } from 'openai';
 import Mastodon from 'mastodon-api';
 
 import { downloadFile } from './utils/downloadFiles.js';
-import { rndAlphabet, rndFontFamily, rndColour } from './utils/arrays.js';
+import { arrAlphabet, arrFontFamilies, arrColours } from './utils/arrays.js';
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
 const interval = 1000 * 60 * 60 * 24; // 24 hours
 const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
 const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
-const successFile = path.join(process.cwd(), 'src', 'log', 'success.txt');
-const successStream = fs.createWriteStream(successFile, { flags: 'a' });
 
-if (process.env.NODE_ENV !== 'production') {
-    dotenv.config(); // TODO we need to expose this all the time, so remove the if statement. Env should always be production
-}
+dotenv.config();
 
 const config = {
     access_token: process.env.NEXT_MASTODON_ACCESS_TOKEN,
@@ -29,8 +25,13 @@ const config = {
 
 const M = new Mastodon(config);
 
+let rndKey;
 let imagesArray = [];
 let newImageNames = [];
+let prompt;
+let rndAlphabet;
+let rndFontFamily;
+let rndColour;
 
 const arrKeys = [
     process.env.NEXT_DALLE_API_KEY_1,
@@ -39,20 +40,29 @@ const arrKeys = [
     process.env.NEXT_DALLE_API_KEY_4,
 ];
 
-// get random api key
-const rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
-
-// set a key for the openai config
-const configuration = new Configuration({
-    apiKey: rndKey,
-});
-const openai = new OpenAIApi(configuration);
-
-// prompt and call the api with our string
-const prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font on a ${rndColour} coloured background.`;
-
 // function to retrieve data with prompt
 const fetchData = async () => {
+    const rndInt = Math.round(Math.random());
+    // set a key for the openai config
+    rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
+    const configuration = new Configuration({
+        apiKey: rndKey,
+    });
+    const openai = new OpenAIApi(configuration);
+    // Retrieve random alphabetic character, font family and colour;
+    rndAlphabet = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+    rndFontFamily = arrFontFamilies[Math.floor(Math.random() * arrFontFamilies.length)].toString();
+    rndColour = arrColours[Math.floor(Math.random() * arrColours.length)].toString();
+    // create a randomised prompt;
+    if (rndInt === 0) {
+        prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font on a ${rndColour} coloured background.`;
+    } else {
+        const rndAlphabetCharater = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater} on top of one another in a ${rndFontFamily} font on a ${rndColour} coloured background`;
+    }
+    imagesArray = [];
+    newImageNames = [];
+    // call the api with our prompt string;
     try {
         const response = await openai.createImage({
             prompt,
@@ -80,15 +90,15 @@ const fetchData = async () => {
 // using the prompt and a random uuid
 const processData = () => {
     const processDataCallback = () => {
-        console.log('calling processDataCallback');
+        console.table(imagesArray);
+        console.table(newImageNames);
+        console.log(`calling processDataCallback`);
+        console.log(`imagesArray.length: ${imagesArray.length}`);
+        console.log(`newImageNames.length: ${newImageNames.length}`);
         postData();
     };
-    const fileDownloadCallback = () => {
-        console.log(`File download callback`);
-    }
-    let itemsProcessed = 0;
     try {
-        imagesArray.forEach((item, index) => {
+        const promises = imagesArray.map((item, index) => {
             const fileName = `${prompt}__${index}_${uuid.v4()}.png`;
             const filePath = path.join(
                 process.cwd(),
@@ -97,12 +107,12 @@ const processData = () => {
                 fileName
             );
             newImageNames.push(fileName);
-            downloadFile(item, filePath, fileDownloadCallback);
-            itemsProcessed++;
-            if (itemsProcessed === imagesArray.length) {
-                processDataCallback();
-                console.log(`${today}. Success from processData function.`);
-            }
+            return downloadFile(item, filePath, () => {
+                console.log('just wrote', filePath);
+            });
+        });
+        Promise.all(promises).then(() => {
+            processDataCallback();
         });
     } catch (error) {
         postDataFallback();
@@ -116,6 +126,7 @@ const processData = () => {
 // postData function
 const postData = () => {
     try {
+        // Let's retrieve a random image from our images array
         const fileName =
             newImageNames[Math.floor(Math.random() * newImageNames.length)];
         const filePath = path.join(
@@ -124,6 +135,7 @@ const postData = () => {
             'img-archive',
             fileName
         );
+        // Create the raw image data
         const fileStream = fs.createReadStream(filePath);
         const responseParams = {
             file: fileStream,
@@ -221,15 +233,13 @@ const postDataFallback = () => {
 // Run fetchData once then schedule it.
 fetchData();
 
-if (process.env.NODE_ENV === 'production') { // This should always be true
-    // Create a random time of day to post to the API
-    const rndIntervalFunction = () => {
-        const nextRunIn = Math.floor(Math.random() * interval);
-        setTimeout(fetchData, nextRunIn);
-    };
-
-    // Run this function every 24 hours
-    setInterval(rndIntervalFunction, interval);
-
-    rndIntervalFunction();
-}
+// Create a random time of day to post to the API
+const rndIntervalFunction = () => {
+    const nextRunIn = Math.floor(Math.random() * interval);
+    const hms = new Date(nextRunIn).toLocaleTimeString('en-GB');
+    setTimeout(fetchData, nextRunIn);
+    console.log(`nextRunIn: ${hms}`);
+};
+// Run this function every 24 hours
+setInterval(rndIntervalFunction, interval);
+rndIntervalFunction();
