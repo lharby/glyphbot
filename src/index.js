@@ -33,20 +33,12 @@ let rndAlphabet;
 let rndFontFamily;
 let rndColour;
 
-const arrKeys = [
-    process.env.NEXT_DALLE_API_KEY_1,
-    process.env.NEXT_DALLE_API_KEY_2,
-    process.env.NEXT_DALLE_API_KEY_3,
-    process.env.NEXT_DALLE_API_KEY_4,
-];
-
 // function to retrieve data with prompt
 const fetchData = async () => {
     const rndInt = Math.round(Math.random());
     // set a key for the openai config
-    rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
     const configuration = new Configuration({
-        apiKey: process.env.NEXT_DALLE_API_KEY_3,
+        apiKey: process.env.NEXT_DALLE_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
     // Retrieve random alphabetic character, font family and colour;
@@ -58,7 +50,7 @@ const fetchData = async () => {
         prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font on a ${rndColour} coloured background.`;
     } else {
         const rndAlphabetCharater = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
-        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater} on top of one another in a ${rndFontFamily} font on a ${rndColour} coloured background`;
+        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater} on top of one another, in a ${rndFontFamily} font on a ${rndColour} coloured background`;
     }
     imagesArray = [];
     newImageNames = [];
