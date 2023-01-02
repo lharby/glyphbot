@@ -1,13 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import uuid from 'uuid';
-import dotenv from 'dotenv';
+const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
+const dotenv = require('dotenv');
 
-import { Configuration, OpenAIApi } from 'openai';
-import Mastodon from 'mastodon-api';
+const { Configuration, OpenAIApi } = require('openai');
+const Mastodon = require('mastodon-api');
 
-import { downloadFile } from './utils/downloadFiles.js';
-import { arrAlphabet, arrFontFamilies, arrColours } from './utils/arrays.js';
+const { downloadFile } = require('./utils/downloadFiles.js');
+const { arrAlphabet, arrFontFamilies, arrColours } = require('./utils/arrays.js');
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
@@ -33,20 +33,12 @@ let rndAlphabet;
 let rndFontFamily;
 let rndColour;
 
-const arrKeys = [
-    process.env.NEXT_DALLE_API_KEY_1,
-    process.env.NEXT_DALLE_API_KEY_2,
-    process.env.NEXT_DALLE_API_KEY_3,
-    process.env.NEXT_DALLE_API_KEY_4,
-];
-
 // function to retrieve data with prompt
 const fetchData = async () => {
     const rndInt = Math.round(Math.random());
     // set a key for the openai config
-    rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
     const configuration = new Configuration({
-        apiKey: rndKey,
+        apiKey: process.env.NEXT_DALLE_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
     // Retrieve random alphabetic character, font family and colour;
@@ -58,7 +50,7 @@ const fetchData = async () => {
         prompt = `The letter ${rndAlphabet} in a ${rndFontFamily} font on a ${rndColour} coloured background.`;
     } else {
         const rndAlphabetCharater = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
-        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater} on top of one another in a ${rndFontFamily} font on a ${rndColour} coloured background`;
+        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater} on top of one another, in a ${rndFontFamily} font on a ${rndColour} coloured background`;
     }
     imagesArray = [];
     newImageNames = [];
@@ -155,12 +147,16 @@ const postData = () => {
             });
         });
         const removeFile = () => {
-            fs.rmSync(
-                path.join(process.cwd(), 'src', 'img-archive', fileName),
-                {
-                    force: true,
+            const path = path.join(process.cwd(), 'src', 'img-archive', fileName);
+            fs.unlink(path, (err) => {
+                if (err) {
+                    errorStream.write(
+                        `${today}. Error attempting to remove file from  postData function: ${err} \n`
+                    );
+                    errorStream.end();
                 }
-            );
+                console.log(`filePath from postData: ${filePath}`);
+            });
         };
     } catch (error) {
         postDataFallback();
@@ -208,17 +204,16 @@ const postDataFallback = () => {
                     });
                 });
                 const removeFile = () => {
-                    fs.rmSync(
-                        path.join(
-                            process.cwd(),
-                            'src',
-                            'img-archive',
-                            fileName
-                        ),
-                        {
-                            force: true,
+                    const filePath = path.join(process.cwd(), 'src', 'img-archive', fileName);
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            errorStream.write(
+                                `${today}. Error attempting to remove file from  postDataFallback: ${err} \n`
+                            );
+                            errorStream.end();
                         }
-                    );
+                        console.log(`filePath from postDataFallback: ${filePath}`);
+                    });
                 };
             }
         );

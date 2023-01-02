@@ -16,3 +16,6 @@ config
 
 # env files
 .env
+
+# errors
+log/errors.txt

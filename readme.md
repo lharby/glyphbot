@@ -3,7 +3,7 @@
 ## Prerequisites
 
 -   NVM
--   Node (use > v14.0.0)
+-   Node (use > v11.0.0)
 
 ## Running
 

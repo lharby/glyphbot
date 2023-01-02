@@ -1,5 +1,5 @@
-import { promises as fs} from "fs";
-import fetch from "node-fetch";
+const fs = require('fs');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const downloadFile = async (url, path) => {
     const response = await fetch(url);
@@ -9,4 +9,4 @@ const downloadFile = async (url, path) => {
     fs.writeFile(path, buffer);
   }
 
-export { downloadFile };
+exports.downloadFile = downloadFile;
