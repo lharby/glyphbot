@@ -8,8 +8,8 @@
         "node": ">=14.0.0"
     },
     "scripts": {
-        "start": "node ./src/index.js",
-        "build": "node ./src/index.js"
+        "start": "node ./src/index.js --experimental-modules",
+        "build": "node ./src/index.js --experimental-modules"
     },
     "keywords": [
         "Mastodon",

@@ -32,9 +32,7 @@ const arrColours = [
     'tan'
 ];
 
-export {
-    arrAlphabet,
-    arrFontFamilies,
-    arrLanguages,
-    arrColours
-}
+exports.arrAlphabet = arrAlphabet;
+exports.arrFontFamilies = arrFontFamilies;
+exports.arrLanguages = arrLanguages;
+exports.arrColours = arrColours;

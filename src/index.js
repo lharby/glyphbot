@@ -1,13 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import uuid from 'uuid';
-import dotenv from 'dotenv';
+const fs = require('fs');
+const path = require('path');
+const uuid = require('uuid');
+const dotenv = require('dotenv');
 
-import { Configuration, OpenAIApi } from 'openai';
-import Mastodon from 'mastodon-api';
+const { Configuration, OpenAIApi } = require('openai');
+const Mastodon = require('mastodon-api');
 
-import { downloadFile } from './utils/downloadFiles.js';
-import { arrAlphabet, arrFontFamilies, arrColours } from './utils/arrays.js';
+const { downloadFile } = require('./utils/downloadFiles.js');
+const { arrAlphabet, arrFontFamilies, arrColours } = require('./utils/arrays.js');
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
@@ -46,7 +46,7 @@ const fetchData = async () => {
     // set a key for the openai config
     rndKey = arrKeys[Math.floor(Math.random() * arrKeys.length)];
     const configuration = new Configuration({
-        apiKey: rndKey,
+        apiKey: process.env.NEXT_DALLE_API_KEY_3,
     });
     const openai = new OpenAIApi(configuration);
     // Retrieve random alphabetic character, font family and colour;
@@ -155,12 +155,16 @@ const postData = () => {
             });
         });
         const removeFile = () => {
-            fs.rmSync(
-                path.join(process.cwd(), 'src', 'img-archive', fileName),
-                {
-                    force: true,
+            const path = path.join(process.cwd(), 'src', 'img-archive', fileName);
+            fs.unlink(path, (err) => {
+                if (err) {
+                    errorStream.write(
+                        `${today}. Error attempting to remove file from  postData function: ${err} \n`
+                    );
+                    errorStream.end();
                 }
-            );
+                console.log(`filePath from postData: ${filePath}`);
+            });
         };
     } catch (error) {
         postDataFallback();
@@ -208,17 +212,16 @@ const postDataFallback = () => {
                     });
                 });
                 const removeFile = () => {
-                    fs.rmSync(
-                        path.join(
-                            process.cwd(),
-                            'src',
-                            'img-archive',
-                            fileName
-                        ),
-                        {
-                            force: true,
+                    const filePath = path.join(process.cwd(), 'src', 'img-archive', fileName);
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            errorStream.write(
+                                `${today}. Error attempting to remove file from  postDataFallback: ${err} \n`
+                            );
+                            errorStream.end();
                         }
-                    );
+                        console.log(`filePath from postDataFallback: ${filePath}`);
+                    });
                 };
             }
         );
