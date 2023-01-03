@@ -25,7 +25,6 @@ const config = {
 
 const M = new Mastodon(config);
 
-let rndKey;
 let imagesArray = [];
 let newImageNames = [];
 let prompt;
@@ -62,16 +61,16 @@ const fetchData = async () => {
             size: '512x512',
         });
         imagesArray = response.data.data.map(item => item.url);
-        console.log(`${today}. Success from fetchData function. Reading api key ${rndKey} with prompt ${prompt}`);
+        console.log(`${today}. Success from fetchData function. Reading with prompt ${prompt}`);
         if (response.data.created) {
             processData();
         }
     } catch (error) {
         if (error.response) {
-            errorStream.write(`${today}. Error reading from fetchData with apiKey ${rndKey}, and error response: ${JSON.stringify(error.response.data)} \n`);
+            errorStream.write(`${today}. Error reading from fetchData, error response: ${JSON.stringify(error.response.data)} \n`);
             errorStream.end();
         } else {
-            errorStream.write(`${today}. Error reading from fetchData with apiKey ${rndKey}, and error message: ${JSON.stringify(error.message)} \n`);
+            errorStream.write(`${today}. Error reading from fetchData, error message: ${JSON.stringify(error.message)} \n`);
             errorStream.end();
         }
         postDataFallback();
@@ -199,7 +198,7 @@ const postDataFallback = () => {
                         console.log(`final response data id: ${response.data.id}`);
                         if (response.data.id) {
                             removeFile();
-                            console.log(`${today}. Success from postDataFallback function posting image to server. Removing file ${fileName}`);
+                            console.log(`${today}. Success from postDataFallback function posting image to server. Removing file: ${fileName}, file index: ${index}. Of total files: ${max}`);
                         }
                     });
                 });
