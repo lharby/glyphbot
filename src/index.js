@@ -146,8 +146,7 @@ const postData = () => {
             });
         });
         const removeFile = () => {
-            const path = path.join(process.cwd(), 'src', 'img-archive', fileName);
-            fs.unlink(path, (err) => {
+            fs.unlink(filePath, (err) => {
                 if (err) {
                     errorStream.write(
                         `${today}. Error attempting to remove file from  postData function: ${err} \n`

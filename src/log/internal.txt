@@ -10,3 +10,34 @@ nextRunIn: 8:51:32 PM
     at processTicksAndRejections (internal/process/task_queues.js:86:5)
 (node:1402) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 9)
 (node:1402) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+
+
+
+1/3/2023, 11:45:43 AM. Success from fetchData function. Reading with prompt The letters q and N on top of one another, in a cursive font on a white coloured background
+(node:1538) UnhandledPromiseRejectionWarning: Error: Not supported
+    at fetch (/home/lharby/sites/glyphbot/src/utils/downloadFiles.cjs:2:49)
+    at downloadFile (/home/lharby/sites/glyphbot/src/utils/downloadFiles.cjs:5:28)
+    at imagesArray.map (/home/lharby/sites/glyphbot/src/index.js:101:20)
+    at Array.map (<anonymous>)
+    at processData (/home/lharby/sites/glyphbot/src/index.js:92:38)
+    at fetchData (/home/lharby/sites/glyphbot/src/index.js:66:13)
+    at processTicksAndRejections (internal/process/task_queues.js:86:5)
+(node:1538) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 9)
+(node:1538) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+
+
+
+(node:1676) UnhandledPromiseRejectionWarning: ReferenceError: path is not defined
+    at removeFile (/home/lharby/sites/glyphbot/src/index.js:149:26)
+    at M.post.then.response (/home/lharby/sites/glyphbot/src/index.js:143:21)
+    at processTicksAndRejections (internal/process/task_queues.js:86:5)
+(node:1676) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:1676) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+
+
+
+calling processDataCallback
+imagesArray.length: 4
+newImageNames.length: 4
+1/3/2023, 12:36:01 PM. Success from postData function posting image to server. Removing file The letter H in a sans serif font on a silver coloured background.__0_6e18f68a-8831-4eda-9113-7b5219baf975.png
+filePath from postData: /home/lharby/sites/glyphbot/src/img-archive/The letter H in a sans serif font on a silver coloured background.__0_6e18f68a-8831-4eda-9113-7b5219baf975.png
