@@ -19,3 +19,6 @@ config
 
 # errors
 src/log/errors.txt
+
+#linux files
+**/._*
