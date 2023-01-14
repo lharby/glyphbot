@@ -41,3 +41,23 @@ imagesArray.length: 4
 newImageNames.length: 4
 1/3/2023, 12:36:01 PM. Success from postData function posting image to server. Removing file The letter H in a sans serif font on a silver coloured background.__0_6e18f68a-8831-4eda-9113-7b5219baf975.png
 filePath from postData: /home/lharby/sites/glyphbot/src/img-archive/The letter H in a sans serif font on a silver coloured background.__0_6e18f68a-8831-4eda-9113-7b5219baf975.png
+
+
+calling processDataCallback
+imagesArray.length: 4
+newImageNames.length: 4
+internal/streams/legacy.js:57
+      throw er; // Unhandled stream error in pipe.
+      ^
+
+Error: form-data: ENOENT: no such file or directory, open '/Users/lharby/remote/sites/glyphbot/src/img-archive/The letter q, in a old gothic script font, on a beige coloured background.__2_1f4234c1-415d-4204-a349-ab82e6d2f40c.png'
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! glyphbot@1.0.1 temp: `node ./src/temp.js --experimental-modules`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the glyphbot@1.0.1 temp script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/lharby/.npm/_logs/2023-01-14T12_50_29_955Z-debug.log

@@ -141,7 +141,6 @@ const postData = () => {
                 if (response.data.id) {
                     removeFile();
                     console.log(`${today}. Success from postData function posting image to server. Removing file ${fileName}`);
-                    process.exit(0);
                 }
             });
         });
@@ -155,6 +154,7 @@ const postData = () => {
                 }
                 console.log(`filePath from postData: ${filePath}`);
             });
+            process.exit(0);
         };
     } catch (error) {
         postDataFallback();
@@ -198,7 +198,6 @@ const postDataFallback = () => {
                         if (response.data.id) {
                             removeFile();
                             console.log(`${today}. Success from postDataFallback function posting image to server. Removing file: ${fileName}, file index: ${index}. Of total files: ${max}`);
-                            process.exit(0);
                         }
                     });
                 });
@@ -213,6 +212,7 @@ const postDataFallback = () => {
                         }
                         console.log(`filePath from postDataFallback: ${filePath}`);
                     });
+                    process.exit(0);
                 };
             }
         );

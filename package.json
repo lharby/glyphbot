@@ -9,7 +9,8 @@
     },
     "scripts": {
         "start": "node ./src/index.js --experimental-modules",
-        "build": "node ./src/index.js --experimental-modules"
+        "build": "node ./src/index.js --experimental-modules",
+        "temp": "node ./src/temp.js --experimental-modules"
     },
     "keywords": [
         "Mastodon",
