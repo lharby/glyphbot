@@ -3,3 +3,5 @@
 # 0 0~23 * * *
 # Every day between 00:00 and 23:00
 # BSD linux https://unix.stackexchange.com/a/580493
+
+# 1~59 * * * * between 1 minute and 59 minutes. 
