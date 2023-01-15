@@ -11,7 +11,6 @@ const { arrAlphabet, arrFontFamilies, arrColours } = require('./utils/arrays.js'
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
-const interval = 1000 * 60 * 60 * 24; // 24 hours
 const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
 const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
 
@@ -155,6 +154,7 @@ const postData = () => {
                 }
                 console.log(`filePath from postData: ${filePath}`);
             });
+            process.exit(0);
         };
     } catch (error) {
         postDataFallback();
@@ -212,6 +212,7 @@ const postDataFallback = () => {
                         }
                         console.log(`filePath from postDataFallback: ${filePath}`);
                     });
+                    process.exit(0);
                 };
             }
         );
@@ -220,19 +221,9 @@ const postDataFallback = () => {
             `${today}. Error reading from postDataFallback: ${error} \n`
         );
         errorStream.end();
+        process.exit(1);
     }
 };
 
 // Run fetchData once then schedule it.
 fetchData();
-
-// Create a random time of day to post to the API
-const rndIntervalFunction = () => {
-    const nextRunIn = Math.floor(Math.random() * interval);
-    const hms = new Date(nextRunIn).toLocaleTimeString('en-GB');
-    setTimeout(fetchData, nextRunIn);
-    console.log(`nextRunIn: ${hms}`);
-};
-// Run this function every 24 hours
-setInterval(rndIntervalFunction, interval);
-rndIntervalFunction();
