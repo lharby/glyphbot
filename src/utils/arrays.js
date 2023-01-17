@@ -29,7 +29,11 @@ const arrColours = [
     'silver',
     'gold',
     'beige',
-    'tan'
+    'tan',
+    'pink',
+    'red',
+    'orange',
+    'lime',
 ];
 
 exports.arrAlphabet = arrAlphabet;

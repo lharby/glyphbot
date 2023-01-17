@@ -7,7 +7,11 @@ const { Configuration, OpenAIApi } = require('openai');
 const Mastodon = require('mastodon-api');
 
 const { downloadFile } = require('./utils/downloadFiles.js');
-const { arrAlphabet, arrFontFamilies, arrColours } = require('./utils/arrays.js');
+const {
+    arrAlphabet,
+    arrFontFamilies,
+    arrColours,
+} = require('./utils/arrays.js');
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
@@ -18,6 +22,8 @@ dotenv.config();
 
 const config = {
     access_token: process.env.NEXT_MASTODON_ACCESS_TOKEN,
+    client_key: process.env.NEXT_MASTODON_CLIENT_KEY,
+    client_secret: process.env.NEXT_MASTODON_CLIENT_SECRET,
     timeout_ms: 60 * 1000,
     api_url: 'https://botsin.space/api/v1/',
 };
@@ -40,14 +46,22 @@ const fetchData = async () => {
     });
     const openai = new OpenAIApi(configuration);
     // Retrieve random alphabetic character, font family and colour;
-    rndAlphabet = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
-    rndFontFamily = arrFontFamilies[Math.floor(Math.random() * arrFontFamilies.length)].toString();
-    rndColour = arrColours[Math.floor(Math.random() * arrColours.length)].toString();
+    rndAlphabet =
+        arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+    rndFontFamily =
+        arrFontFamilies[
+            Math.floor(Math.random() * arrFontFamilies.length)
+        ].toString();
+    rndColour =
+        arrColours[Math.floor(Math.random() * arrColours.length)].toString();
     // create a randomised prompt;
     if (rndInt !== 0) {
         prompt = `The letter ${rndAlphabet}, in a ${rndFontFamily} font, on a ${rndColour} coloured background.`;
     } else {
-        const rndAlphabetCharater = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+        const rndAlphabetCharater =
+            arrAlphabet[
+                Math.floor(Math.random() * arrAlphabet.length)
+            ].toString();
         prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater}, on top of one another, in a ${rndFontFamily} font, on a ${rndColour} coloured background`;
     }
     imagesArray = [];
@@ -60,16 +74,26 @@ const fetchData = async () => {
             size: '512x512',
         });
         imagesArray = response.data.data.map(item => item.url);
-        console.log(`${today}. Success from fetchData function. Reading with prompt ${prompt}`);
+        console.log(
+            `${today}. Success from fetchData function. Reading with prompt ${prompt}`
+        );
         if (response.data.created) {
             processData();
         }
     } catch (error) {
         if (error.response) {
-            errorStream.write(`${today}. Error reading from fetchData, error response: ${JSON.stringify(error.response.data)} \n`);
+            errorStream.write(
+                `${today}. Error reading from fetchData, error response: ${JSON.stringify(
+                    error.response.data
+                )} \n`
+            );
             errorStream.end();
         } else {
-            errorStream.write(`${today}. Error reading from fetchData, error message: ${JSON.stringify(error.message)} \n`);
+            errorStream.write(
+                `${today}. Error reading from fetchData, error message: ${JSON.stringify(
+                    error.message
+                )} \n`
+            );
             errorStream.end();
         }
         postDataFallback();
@@ -140,12 +164,14 @@ const postData = () => {
             M.post('statuses', mediaParams).then(response => {
                 if (response.data.id) {
                     removeFile();
-                    console.log(`${today}. Success from postData function posting image to server. Removing file ${fileName}`);
+                    console.log(
+                        `${today}. Success from postData function posting image to server. Removing file ${fileName}`
+                    );
                 }
             });
         });
         const removeFile = () => {
-            fs.unlink(filePath, (err) => {
+            fs.unlink(filePath, err => {
                 if (err) {
                     errorStream.write(
                         `${today}. Error attempting to remove file from  postData function: ${err} \n`
@@ -194,23 +220,34 @@ const postDataFallback = () => {
                         media_ids: [mediaId],
                     };
                     M.post('statuses', mediaParams).then(response => {
-                        console.log(`final response data id: ${response.data.id}`);
+                        console.log(
+                            `final response data id: ${response.data.id}`
+                        );
                         if (response.data.id) {
                             removeFile();
-                            console.log(`${today}. Success from postDataFallback function posting image to server. Removing file: ${fileName}, file index: ${index}. Of total files: ${max}`);
+                            console.log(
+                                `${today}. Success from postDataFallback function posting image to server. Removing file: ${fileName}, file index: ${index}. Of total files: ${max}`
+                            );
                         }
                     });
                 });
                 const removeFile = () => {
-                    const filePath = path.join(process.cwd(), 'src', 'img-archive', fileName);
-                    fs.unlink(filePath, (err) => {
+                    const filePath = path.join(
+                        process.cwd(),
+                        'src',
+                        'img-archive',
+                        fileName
+                    );
+                    fs.unlink(filePath, err => {
                         if (err) {
                             errorStream.write(
                                 `${today}. Error attempting to remove file from  postDataFallback: ${err} \n`
                             );
                             errorStream.end();
                         }
-                        console.log(`filePath from postDataFallback: ${filePath}`);
+                        console.log(
+                            `filePath from postDataFallback: ${filePath}`
+                        );
                     });
                     process.exit(0);
                 };
