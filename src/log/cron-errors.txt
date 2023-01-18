@@ -13,3 +13,6 @@ Error: Mastodon config must include 'access_token' when using 'user_auth'
     at Module.load (internal/modules/cjs/loader.js:685:32)
     at Function.Module._load (internal/modules/cjs/loader.js:620:12)
     at Function.Module.runMain (internal/modules/cjs/loader.js:877:12)
+/home/lharby/sites/glyphbot/start.sh: line 4: npm: command not found
+/bin/sh: 1: /home/sites/glyphbot/start.sh: not found
+/bin/sh: 1: /home/sites/glyphbot/start.sh: not found
