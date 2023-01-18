@@ -7,7 +7,7 @@ Error: Mastodon config must include 'access_token' when using 'user_auth'
     at Array.forEach (<anonymous>)
     at Function._validateConfigOrThrow (/home/lharby/sites/glyphbot/node_modules/mastodon-api/lib/mastodon.js:343:46)
     at new Mastodon (/home/lharby/sites/glyphbot/node_modules/mastodon-api/lib/mastodon.js:41:18)
-    at Object.<anonymous> (/home/lharby/sites/glyphbot/src/index.js:25:11)
+    at Object.<anonymous> (/home/lharby/sites/glyphbot/src/index.js:31:11)
     at Module._compile (internal/modules/cjs/loader.js:816:30)
     at Object.Module._extensions..js (internal/modules/cjs/loader.js:827:10)
     at Module.load (internal/modules/cjs/loader.js:685:32)
