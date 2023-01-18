@@ -1,7 +1,7 @@
 # 0 12 * * * cd /home/lharby/sites/glyphbot/src && /usr/local/bin/node index.js > /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
 
 MAILTO=xxxx@gmail.com
-*/5 * * * * /home/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
+*/5 * * * * /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
 
 # 0 0~23 * * *
 # Every day between 00:00 and 23:00
