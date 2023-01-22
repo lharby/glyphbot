@@ -1,10 +1,11 @@
+SHELL=/bin/bash
+
 # 0 12 * * * cd /home/lharby/sites/glyphbot/src && /usr/local/bin/node index.js > /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
 
 MAILTO=xxxx@gmail.com
 */5 * * * * /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
 
 # 0 12 * * * cd /home/lharby/sites/glyphbot/src && /usr/local/bin/node index.js --experimental-modules > /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
-
 
 
 # 0 0~23 * * *
