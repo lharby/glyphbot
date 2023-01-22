@@ -1,2 +1,7 @@
+set -x
 #!/bin/bash
-node ./src/index.js --experimental-modules
+whoami
+pwd
+env
+cd /home/lharby/sites/glyphbot
+npm run start
