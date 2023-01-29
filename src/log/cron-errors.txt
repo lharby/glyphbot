@@ -45,9 +45,79 @@ LOGNAME=lharby
 HOME=/home/lharby
 LANG=en_GB.UTF-8
 SHLVL=2
-MAILTO=xxx@gmail.com
+MAILTO=xxxx@gmail.com
 PATH=/usr/bin:/bin
 _=/usr/bin/env
 ++ cd /home/lharby/sites/glyphbot
 ++ npm run start
 /home/lharby/sites/glyphbot/start.sh: line 7: npm: command not found
+++ whoami
+lharby
+++ pwd
+/home/lharby
+++ env
+SHELL=/bin/bash
+PWD=/home/lharby
+LOGNAME=lharby
+HOME=/home/lharby
+LANG=en_GB.UTF-8
+SHLVL=2
+MAILTO=xxxx@gmail.com
+PATH=/usr/bin:/bin
+_=/usr/bin/env
+++ cd /home/lharby/sites/glyphbot
+++ npm run start
+/home/lharby/sites/glyphbot/start.sh: line 7: npm: command not found
+++ whoami
+lharby
+++ pwd
+/home/lharby
+++ env
+SHELL=/bin/bash
+PWD=/home/lharby
+LOGNAME=lharby
+HOME=/home/lharby
+LANG=en_GB.UTF-8
+SHLVL=2
+MAILTO=xxxx@gmail.com
+PATH=/usr/bin:/bin
+_=/usr/bin/env
+++ cd /home/lharby/sites/glyphbot
+++ npm run start
+/home/lharby/sites/glyphbot/start.sh: line 7: npm: command not found
+++ export PATH=/usr/bin:/bin:/usr/local/bin/npm
+++ PATH=/usr/bin:/bin:/usr/local/bin/npm
+++ whoami
+lharby
+++ pwd
+/home/lharby
+++ env
+SHELL=/bin/bash
+PWD=/home/lharby
+LOGNAME=lharby
+HOME=/home/lharby
+LANG=en_GB.UTF-8
+SHLVL=2
+PATH=/usr/bin:/bin:/usr/local/bin/npm
+_=/usr/bin/env
+++ cd /home/lharby/sites/glyphbot
+++ npm run start
+/home/lharby/sites/glyphbot/start.sh: line 8: npm: command not found
+++ export PATH=/usr/bin:/bin:/usr/local/bin/node
+++ PATH=/usr/bin:/bin:/usr/local/bin/node
+++ whoami
+lharby
+++ pwd
+/home/lharby
+++ env
+SHELL=/bin/bash
+PWD=/home/lharby
+LOGNAME=lharby
+HOME=/home/lharby
+LANG=en_GB.UTF-8
+SHLVL=2
+PATH=/usr/bin:/bin:/usr/local/bin/node
+_=/usr/bin/env
+++ cd /home/lharby/sites/glyphbot/src
+++ node index.js
+/home/lharby/sites/glyphbot/start.sh: line 8: node: command not found
