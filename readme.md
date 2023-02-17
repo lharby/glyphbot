@@ -15,6 +15,8 @@ There is a fallback should any of the processes fail
 
 API tokens, secrets, authentication etc are stored in .env file, and should not be pushed to the repo.
 
+You can use .env.example to populate your API keys then save it as .env in the root.
+
 ## Notes
 
 Refenreces:
