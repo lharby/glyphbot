@@ -5,5 +5,5 @@ whoami
 pwd
 env
 cd /home/lharby/sites/glyphbot/src
-node index.js --experimental-modules
+/usr/local/bin/node index.js --experimental-modules
 exec bash
