@@ -15,7 +15,7 @@ const {
 
 const now = new Date();
 const today = now.toLocaleString('en-gb');
-const errorFile = path.join(process.cwd(), 'src', 'log', 'errors.txt');
+const errorFile = path.join(process.cwd(), 'log', 'errors.txt');
 const errorStream = fs.createWriteStream(errorFile, { flags: 'a' });
 
 dotenv.config();
@@ -116,7 +116,6 @@ const processData = () => {
             const fileName = `${prompt}__${index}_${uuid.v4()}.png`;
             const filePath = path.join(
                 process.cwd(),
-                'src',
                 'img-archive',
                 fileName
             );
@@ -145,7 +144,6 @@ const postData = () => {
             newImageNames[Math.floor(Math.random() * newImageNames.length)];
         const filePath = path.join(
             process.cwd(),
-            'src',
             'img-archive',
             fileName
         );
@@ -193,7 +191,7 @@ const postData = () => {
 const postDataFallback = () => {
     try {
         fs.readdir(
-            path.join(process.cwd(), 'src', 'img-archive'),
+            path.join(process.cwd(), 'img-archive'),
             (err, files) => {
                 if (err) {
                     errorStream.write(
@@ -206,7 +204,7 @@ const postDataFallback = () => {
                 const index = Math.round(Math.random() * (max - min) + min);
                 const fileName = files[index];
                 const fileStream = fs.createReadStream(
-                    path.join(process.cwd(), 'src', 'img-archive', fileName)
+                    path.join(process.cwd(), 'img-archive', fileName)
                 );
                 const promptFallback = fileName.split('__')[0];
                 const responseParams = {
@@ -234,7 +232,6 @@ const postDataFallback = () => {
                 const removeFile = () => {
                     const filePath = path.join(
                         process.cwd(),
-                        'src',
                         'img-archive',
                         fileName
                     );
