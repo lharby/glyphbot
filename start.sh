@@ -9,4 +9,4 @@ while read line; do export "$line";
 done < .env
 cd /home/lharby/sites/glyphbot/src/
 /usr/local/bin/node index.js --experimental-modules
-#exec bash
+exec bash
