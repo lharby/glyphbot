@@ -43,13 +43,17 @@ const fetchData = async () => {
     // Retrieve random alphabetic character, font family and colour;
     rndAlphabet = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
     rndFontFamily = arrFontFamilies[Math.floor(Math.random() * arrFontFamilies.length)].toString();
-    rndColour = arrColours[Math.floor(Math.random() * arrColours.length)].toString();
     // create a randomised prompt;
-    if (rndInt !== 0) {
-        prompt = `The letter ${rndAlphabet}, in a ${rndFontFamily} font, on a ${rndColour} coloured background.`;
-    } else {
-        const rndAlphabetCharater = arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+    if (rndInt === 0) {
+        const rndAlphabetCharater =
+            arrAlphabet[
+                Math.floor(Math.random() * arrAlphabet.length)
+            ].toString();
         prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater}, on top of one another, in a ${rndFontFamily} font, on a ${rndColour} coloured background`;
+    } else if (rndInt === 1) {
+        prompt = `A malformed letter ${rndAlphabet}, on a ${rndColour} coloured background.`;
+    } else {
+        prompt = `The letter ${rndAlphabet}, in a ${rndFontFamily} font, on a ${rndColour} coloured background.`;
     }
     imagesArray = [];
     newImageNames = [];
