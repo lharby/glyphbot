@@ -1,3 +1,4 @@
+  GNU nano 5.4                                                   /tmp/crontab.xjerg7/crontab                                                             
 SHELL=/bin/bash
 
 # Edit this file to introduce tasks to be run by cron.
@@ -26,4 +27,6 @@ SHELL=/bin/bash
 
 # 30 * * * * cd /home/lharby/sites/image-api && /usr/local/bin/node index.js > /home/lharby/sites/image-api/log/errors.txt 2>&1
 
-*/5 * * * * /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
+0 12 * * * /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
+
+0 12 * * * perl -le 'sleep rand 86400' && /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-sched-errors.txt 2>&1
