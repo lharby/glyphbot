@@ -32,6 +32,14 @@ SHELL=/bin/bash
 
 0 12 * * * /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-errors.txt 2>&1
 
-# 0 12 * * * perl -le 'sleep rand 86400' && /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-sched-errors.txt 2>&1
+# 0 12 * * * perl -le 'sleep rand 86400' && /home/lharby/sites/glyphbot/start.sh >> /home/lharby/sites/glyphbot/src/log/cron-sched-errors.txt 2>&
 
-0 12 * * * /home/lharby/sites/glyphbot/delay.sh >> /home/lharby/sites/glyphbot/src/log/cron-sched-errors.txt 2>&
+0 12 * * * /home/lharby/sites/glyphbot/delay.sh >> /home/lharby/sites/glyphbot/src/log/cron-sched-errors.txt 2>&1
+
+*/2 * * * * echo $(( ($RANDOM % 1440)*60 + ($RANDOM % 60) )) > /home/lharby/Documents/cron-log.txt 2>&1
+
+*/2 * * * * echo $(( ($RANDOM % 1440)*60 + ($RANDOM % 60) )) > /home/lharby/sites/glyphbot/src/log/cron-log1.txt 2>&1
+
+*/2 * * * * print $(( ($RANDOM % 1440)*60 + ($RANDOM % 60) )) >> /home/lharby/sites/glyphbot/src/log/cron-log2.txt 2>&1
+
+*/2 * * * * /home/lharby/sites/glyphbot/random.sh
