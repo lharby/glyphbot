@@ -22,3 +22,6 @@ src/log/
 
 #linux files
 **/._*
+
+#OS dependent files
+git-mac.sh
