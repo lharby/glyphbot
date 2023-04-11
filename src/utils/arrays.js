@@ -39,6 +39,7 @@ const arrColours = [
     'red',
     'orange',
     'lime',
+    'pastel'
 ];
 
 exports.arrAlphabet = arrAlphabet;
