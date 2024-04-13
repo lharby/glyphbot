@@ -34,12 +34,12 @@ let imagesArray = [];
 let newImageNames = [];
 let prompt;
 let rndAlphabet;
+let rndAlphabet2;
 let rndFontFamily;
 let rndColour;
 
 // function to retrieve data with prompt
 const fetchData = async () => {
-    const rndInt = Math.round(Math.random() * 3);
     // set a key for the openai config
     const configuration = new Configuration({
         apiKey: process.env.NEXT_DALLE_API_KEY,
@@ -48,6 +48,8 @@ const fetchData = async () => {
     // Retrieve random alphabetic character, font family and colour;
     rndAlphabet =
         arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
+    rndAlphabet2 =
+        arrAlphabet[Math.floor(Math.random() * arrAlphabet.length)].toString();
     rndFontFamily =
         arrFontFamilies[
             Math.floor(Math.random() * arrFontFamilies.length)
@@ -55,17 +57,9 @@ const fetchData = async () => {
     rndColour =
         arrColours[Math.floor(Math.random() * arrColours.length)].toString();
     // create a randomised prompt;
-    if (rndInt === 0) {
-        const rndAlphabetCharater =
-            arrAlphabet[
-                Math.floor(Math.random() * arrAlphabet.length)
-            ].toString();
-        prompt = `The letters ${rndAlphabet} and ${rndAlphabetCharater}, on top of one another, in a ${rndFontFamily} font, on a ${rndColour} coloured background`;
-    } else if (rndInt === 1) {
-        prompt = `A malformed letter ${rndAlphabet}, on a ${rndColour} coloured background.`;
-    } else {
-        prompt = `The letter ${rndAlphabet}, in a ${rndFontFamily} font, on a ${rndColour} coloured background.`;
-    }
+    const intro = [`The letter ${rndAlphabet}`, `Not the letter ${rndAlphabet}`, `A malformed letter ${rndAlphabet}`, `The letters ${rndAlphabet} and ${rndAlphabet2}`];
+    const rndIntro = intro[Math.floor(Math.random() * intro.length)].toString();
+    prompt = `${rndIntro}, in a ${rndFontFamily} font, on a ${rndColour} coloured background`;
     imagesArray = [];
     newImageNames = [];
     // call the api with our prompt string;
